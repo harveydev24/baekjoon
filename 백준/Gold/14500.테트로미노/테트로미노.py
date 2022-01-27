@@ -30,21 +30,12 @@ def sum_process(x, y, dir):
 
 def sum_polinominos(x, y, dir):
     tmp_max = 0
-    tmp_max = max(tmp_max, sum_process(x, y, dir))
-    dir = rotate_polinomino_clockwise(dir)
-    tmp_max = max(tmp_max, sum_process(x, y, dir))
-    dir = rotate_polinomino_clockwise(dir)
-    tmp_max = max(tmp_max, sum_process(x, y, dir))
-    dir = rotate_polinomino_clockwise(dir)
-    tmp_max = max(tmp_max, sum_process(x, y, dir))
-    dir = flip_polinomino(dir)
-    tmp_max = max(tmp_max, sum_process(x, y, dir))
-    dir = rotate_polinomino_clockwise(dir)
-    tmp_max = max(tmp_max, sum_process(x, y, dir))
-    dir = rotate_polinomino_clockwise(dir)
-    tmp_max = max(tmp_max, sum_process(x, y, dir))
-    dir = rotate_polinomino_clockwise(dir)
-    tmp_max = max(tmp_max, sum_process(x, y, dir))
+    for i in range(8):
+        if i == 4:
+            dir = flip_polinomino(dir)
+        tmp_max = max(tmp_max, sum_process(x, y, dir))
+        dir = rotate_polinomino_clockwise(dir)
+
 
     return tmp_max
 
