@@ -1,18 +1,21 @@
 N, M = map(int, input().split())
-trees = list(map(int, input().split()))
+array = list(map(int, input().split()))
 
-start = 0
-end = max(trees)
+start = -1
+end = max(array)
 
-while start <= end:
-    mid = (start + end) // 2
-    sum = 0
+def check(mid):
+    tmp_sum = 0
+    for item in array:
+        tmp_sum += max(0, item-mid)
+    return tmp_sum>=M
 
-    for tree in trees:
-        sum += max(0, (tree - mid))
-    #print('{0} {1} {2} {3}'.format(start, mid, end, sum))
-    if sum >= M:
-        start = mid + 1
+while start + 1 < end:
+    mid = (start+end)//2
+
+    if check(mid):
+        start = mid
     else:
-        end = mid - 1
-print(end)
+        end = mid
+
+print(start)
