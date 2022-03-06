@@ -4,7 +4,6 @@ N = int(input())
 
 
 def up(array):
-    global ans
     for c in range(N):
 
         tmp = []
@@ -20,7 +19,6 @@ def up(array):
         while r < N-1:
             if tmp[r] == tmp[r+1]:
                 tmp[r] = 2*tmp[r]
-                ans = max(ans, tmp[r])
                 tmp[r+1] = 0
             r += 1
 
@@ -36,7 +34,6 @@ def up(array):
 
 
 def down(array):
-    global ans
     for c in range(N):
 
         tmp = []
@@ -52,7 +49,6 @@ def down(array):
         while r < N-1:
             if tmp[r] == tmp[r+1]:
                 tmp[r] = 2*tmp[r]
-                ans = max(ans, tmp[r])
                 tmp[r+1] = 0
             r += 1
 
@@ -68,7 +64,6 @@ def down(array):
 
 
 def left(array):
-    global ans
     for r in range(N):
 
         tmp = []
@@ -85,7 +80,6 @@ def left(array):
         while c < N-1:
             if tmp[c] == tmp[c+1]:
                 tmp[c] = 2*tmp[c]
-                ans = max(ans, tmp[c])
                 tmp[c+1] = 0
             c += 1
 
@@ -101,7 +95,6 @@ def left(array):
 
 
 def right(array):
-    global ans
     for r in range(N):
 
         tmp = []
@@ -118,7 +111,6 @@ def right(array):
         while c < N-1:
             if tmp[c] == tmp[c+1]:
                 tmp[c] = 2*tmp[c]
-                ans = max(ans, tmp[c])
                 tmp[c+1] = 0
             c += 1
 
@@ -139,7 +131,7 @@ array = [list(map(int, input().split())) for _ in range(N)]
 def solve(array, cnt):
     global ans
     if cnt == 5:
-        ans = max(ans, max(max(array)))
+        ans = max(ans, max(map(max, array)))
         return
 
     for i in range(4):
@@ -167,7 +159,7 @@ def solve(array, cnt):
             array = tmp
 
 
-ans = max(max(array))
+ans = 2
 
 solve(array, 0)
 print(ans)
