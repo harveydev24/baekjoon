@@ -3,7 +3,7 @@ import copy
 N = int(input())
 
 
-def up():
+def up(array):
     global ans
     for c in range(N):
 
@@ -35,7 +35,7 @@ def up():
             array[r][c] = tmp2[r]
 
 
-def down():
+def down(array):
     global ans
     for c in range(N):
 
@@ -67,7 +67,7 @@ def down():
             array[r][c] = tmp2[N-1-r]
 
 
-def left():
+def left(array):
     global ans
     for r in range(N):
 
@@ -100,7 +100,7 @@ def left():
             array[r][c] = tmp2[c]
 
 
-def right():
+def right(array):
     global ans
     for r in range(N):
 
@@ -136,38 +136,38 @@ def right():
 array = [list(map(int, input().split())) for _ in range(N)]
 
 
-def solve(cnt):
-    global array, ans
+def solve(array, cnt):
+    global ans
     if cnt == 5:
         ans = max(ans, max(max(array)))
         return
 
     for i in range(4):
         if i == 0:
-            tmp = copy.deepcopy(array)
-            up()
-            solve(cnt + 1)
+            tmp = [row[:] for row in array]
+            up(array)
+            solve(array, cnt + 1)
             array = tmp
         elif i == 1:
-            tmp = copy.deepcopy(array)
-            down()
-            solve(cnt + 1)
+            tmp = [row[:] for row in array]
+            down(array)
+            solve(array, cnt + 1)
             array = tmp
 
         elif i == 2:
-            tmp = copy.deepcopy(array)
-            left()
-            solve(cnt + 1)
+            tmp = [row[:] for row in array]
+            left(array)
+            solve(array, cnt + 1)
             array = tmp
 
         elif i == 3:
-            tmp = copy.deepcopy(array)
-            right()
-            solve(cnt + 1)
+            tmp = [row[:] for row in array]
+            right(array)
+            solve(array, cnt + 1)
             array = tmp
 
 
-ans = 2
+ans = max(max(array))
 
-solve(0)
+solve(array, 0)
 print(ans)
