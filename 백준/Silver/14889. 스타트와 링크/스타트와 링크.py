@@ -1,24 +1,33 @@
-from itertools import combinations
-
 N = int(input())
-S = []
-for _ in range(N):
-    S.append(list(map(int, input().split())))
+S = [list(map(int, input().split())) for _ in range(N)]
 
-selectedTeam = combinations(range(N), int(N/2))
-tmpMin = float('inf')
-for team in selectedTeam:
-    nonTeam = []
-    for i in range(N):
-        if i not in team:
-            nonTeam.append(i)
-    selectedPower = 0
-    nonPower = 0
-    tmpCombSelected = list(combinations(team, 2))
-    tmpCombNon = list(combinations(nonTeam, 2))
-    for j in range(len(tmpCombSelected)):
-        selectedPower += (S[tmpCombSelected[j][0]][tmpCombSelected[j][1]] + S[tmpCombSelected[j][1]][tmpCombSelected[j][0]])
-        nonPower += (S[tmpCombNon[j][0]][tmpCombNon[j][1]] + S[tmpCombNon[j][1]][tmpCombNon[j][0]])
-    tmpMin = min(abs(selectedPower-nonPower), tmpMin)
+ans = 10**5
 
-print(tmpMin)
+
+def solve(lst, cnt, length):
+    global ans
+
+    if N-length < N//2-cnt:
+        return
+
+    if length == N:
+        if cnt == N//2:
+            power = [0, 0]
+            for i in range(N):
+                for j in range(i+1, N):
+                    if lst[i] == lst[j]:
+                        power[lst[i]] += (S[i][j]+S[j][i])
+            ans = min(ans, abs(power[0]-power[1]))
+            return
+        else:
+            return
+
+    for i in range(2):
+        if i == 0:
+            solve(lst+[i], cnt, length+1)
+        if i == 1 and cnt < N//2:
+            solve(lst+[i], cnt+i, length+1)
+
+
+solve([], 0, 0)
+print(ans)
