@@ -85,7 +85,11 @@ def gravity():
 
 def rotation():
     global arr
-    arr = list(map(list, zip(*arr)))[::-1]
+    rotated_arr = [x[:] for x in arr]
+    for r in range(N):
+        for c in range(N):
+            rotated_arr[r][c] = arr[c][N-1-r]
+    arr = [x[:] for x in rotated_arr]
 
 
 ans = 0
