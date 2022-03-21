@@ -1,31 +1,44 @@
 import sys
-input = sys.stdin.readline
-sys.setrecursionlimit((10**9))
-tree = []
-res = []
-def solve(tree, left, right):
-    if left > right:
-        return
-    root = tree[left]
-    leftStart = left + 1
-    rightEnd = right
-    rightStart = right + 1
-    for i in range(right - left + 1):
-        if i == 0: continue
-        if tree[left+i] > root:
-            rightStart = i + left
-            break
-    leftEnd = rightStart-1
-    solve(tree, leftStart, leftEnd)
-    solve(tree, rightStart, rightEnd)
-    res.append(root)
+sys.setrecursionlimit(10**5)
+
+pre_order = []
+tree = {}
 
 while True:
     try:
-        a = int(input())
-        tree.append(a)
+        tmp = int(input())
+        pre_order.append(tmp)
+        tree[tmp] = [-1, -1]
     except:
         break
-solve(tree, 0, len(tree)-1)
-for item in res:
-    print(item)
+
+
+def findParent(start, end):
+    left_start, left_end, right_start, right_end = -1, end, -1, end
+    for i in range(start+1, end):
+        if tree[pre_order[start]][0] == -1 and pre_order[i] < pre_order[start]:
+            tree[pre_order[start]][0] = pre_order[i]
+            left_start = i
+        if tree[pre_order[start]][1] == -1 and pre_order[i] > pre_order[start]:
+            tree[pre_order[start]][1] = pre_order[i]
+            right_start = i
+            left_end = i
+
+    if left_start != -1:
+        findParent(left_start, left_end)
+    if right_start != -1:
+        findParent(right_start, right_end)
+
+
+findParent(0, len(pre_order))
+
+
+def post_order(x):
+    if x != -1:
+        post_order(tree[x][0])
+        post_order(tree[x][1])
+        print(x)
+
+
+if pre_order:
+    post_order(pre_order[0])
