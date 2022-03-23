@@ -3,12 +3,15 @@ sys.setrecursionlimit(10**5)
 
 k = int(input())
 
-i = 0
-while True:
-    if (2**i) >= k:
-        break
-    i += 1
-i -= 1
+
+def cal_i(k):
+    i = 0
+    while True:
+        if (2**i) >= k:
+            break
+        i += 1
+    i -= 1
+    return i
 
 
 def solve(k, i, cnt):
@@ -20,14 +23,8 @@ def solve(k, i, cnt):
         return
 
     k = k-2**i
-    i = 0
-    while True:
-        if (2**i) >= k:
-            break
-        i += 1
-    i -= 1
 
-    solve(k, i, cnt+1)
+    solve(k, cal_i(k), cnt+1)
 
 
-solve(k, i, 0)
+solve(k, cal_i(k), 0)
