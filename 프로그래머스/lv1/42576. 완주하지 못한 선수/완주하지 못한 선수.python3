@@ -1,0 +1,22 @@
+def solution(participant, completion):
+    p_dict = {}
+    
+    for name in participant:
+        if p_dict.get(name) == None:
+            p_dict[name] = [False]
+        else:
+            p_dict[name].append(False)
+
+    for name in completion:
+        for i in range(len(p_dict[name])):
+            if p_dict[name][i] == False:
+                p_dict[name][i] = True
+                break
+    
+    for key, value in p_dict.items():
+        for item in value:
+            if item == False:
+                answer = key
+                break
+    
+    return answer
