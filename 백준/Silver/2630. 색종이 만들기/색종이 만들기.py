@@ -1,41 +1,32 @@
 N = int(input())
-paper = []
-for _ in range(N):
-    paper.append(list(map(int, input().split())))
+arr = [list(map(int, input().split())) for _ in range(N)]
 
-def check(paper):
-    for i in range(len(paper)):
-        for j in range(len(paper)):
-            if paper[i][j] != paper[0][0]: return False
+white = 0
+blue = 0
+
+
+def check(i, j, size):
+    for r in range(i, i+size):
+        for c in range(j, j+size):
+            if arr[r][c] != arr[i][j]:
+                return False
     return True
 
 
-w = 0
-b = 0
+def solve(i, j, size):
+    global blue, white
+    if check(i, j, size):
+        if arr[i][j]:
+            blue += 1
+        else:
+            white += 1
+        return
 
-def solve(paper):
-    global w
-    global b
-    if len(paper) == 1 or check(paper): 
-        if paper[0][0] == 1: b += 1
-        else: w += 1
-    else:
-        lu = []
-        ru = []
-        ld = []
-        rd = []
-        for i in range(int(len(paper)/2)):
-            lu.append(paper[i][:int(len(paper)/2)])
-            ru.append(paper[i][int(len(paper)/2):])
-        for i in range(int(len(paper)/2), len(paper)):
-            ld.append(paper[i][:int(len(paper)/2)])
-            rd.append(paper[i][int(len(paper)/2):])
-        solve(lu)
-        solve(ru)
-        solve(ld)
-        solve(rd)
-        
-solve(paper)
-print(w)
-print(b)
-        
+    for m in range(2):
+        for n in range(2):
+            solve(i+(size//2)*m, j+(size//2)*n, size//2)
+
+
+solve(0, 0, N)
+print(white)
+print(blue)
