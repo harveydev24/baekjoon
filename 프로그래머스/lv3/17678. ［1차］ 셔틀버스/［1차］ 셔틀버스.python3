@@ -1,0 +1,50 @@
+from collections import deque
+
+
+def hhmmTomin(hhmm):
+    hh = hhmm[:2]
+    mm = hhmm[3:]
+    return int(hh)*60 + int(mm)
+
+
+def minTohhmm(minute):
+    hh = minute//60
+    mm = minute % 60
+    if hh < 10:
+        hh = str(0)+str(hh)
+    else:
+        hh = str(hh)
+
+    if mm < 10:
+        mm = '0'+str(mm)
+    else:
+        mm = str(mm)
+
+    return hh+":"+mm
+
+
+def solution(n, t, m, timetable):
+    buses = [540+t*i for i in range(n)]
+
+    timetable_ = []
+
+    for hhmm in timetable:
+        timetable_.append(hhmmTomin(hhmm))
+    timetable_.sort()
+    timetable_ = deque(timetable_)
+
+    ans = 0
+    for i in range(n):
+        bus = []
+        for _ in range(m):
+            if not timetable_:
+                break
+            if timetable_[0] <= buses[i]:
+                bus.append(timetable_.popleft())
+
+        if len(bus) < m:
+            ans = buses[i]
+        else:
+            ans = bus[-1]-1
+
+    return minTohhmm(ans)
