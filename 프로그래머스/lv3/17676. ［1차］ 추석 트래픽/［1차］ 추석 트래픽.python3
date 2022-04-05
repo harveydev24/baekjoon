@@ -1,0 +1,29 @@
+def convert_time(time):
+    hour, minute, second = time.split(':')
+    second, millisecond = second.split('.')
+    return (int(hour)*3600 + int(minute)*60 + int(second))*1000+int(millisecond)
+
+
+def convert_duration(duration):
+    return int(float(duration[:-1])*1000)
+
+
+def solution(lines):
+    answer = 0
+    start, end = [], []
+    for line in lines:
+        date, time, duration = line.split()
+        time = convert_time(time)
+        duration = convert_duration(duration)
+        start.append(time-duration+1)
+        end.append(time)
+
+    for i in range(len(lines)):
+        cnt = 0
+        end_time = end[i]
+        for j in range(i, len(lines)):
+            if start[j] - end_time < 1000:
+                cnt += 1
+        answer = max(answer, cnt)
+
+    return answer
