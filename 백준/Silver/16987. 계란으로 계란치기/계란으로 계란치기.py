@@ -5,7 +5,7 @@ ans = 0
 
 def solve(idx, cnt):
     global ans
-    if idx == N:
+    if idx == N or cnt == N-1:
         ans = max(ans, cnt)
         return
 
@@ -28,8 +28,8 @@ def solve(idx, cnt):
                 solve(idx+1, cnt)
             eggs[i][0] += eggs[idx][1]
             eggs[idx][0] += eggs[i][1]
-        else:
-            solve(idx + 1, cnt)
+        # else:
+        #     solve(idx + 1, cnt)
 
 
 for _ in range(N):
