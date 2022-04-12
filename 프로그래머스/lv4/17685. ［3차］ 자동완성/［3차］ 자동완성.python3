@@ -1,0 +1,23 @@
+from collections import defaultdict
+
+
+def solution(words):
+    answer = 0
+    words.sort()
+    for i in range(len(words)-1):
+        len1 = len(words[i])
+        len2 = len(words[i+1])
+        j = 0
+        while j < len1 and j < len2 and words[i][j] == words[i+1][j]:
+            j += 1
+
+        if i == 0:
+            answer += min(j+1, len1)
+        else:
+            answer += min(max(last_j+1, j+1), len1)
+
+        last_j = j
+
+    answer += min(last_j+1, len2)
+
+    return answer
