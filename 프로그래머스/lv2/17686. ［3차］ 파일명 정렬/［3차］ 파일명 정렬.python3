@@ -1,0 +1,34 @@
+def solution(files):
+    answer = []
+    lst = []
+    for idx, file in enumerate(files):
+        file = file.upper()
+        length = len(file)
+
+        HEAD = ''
+        NUMBER = -1
+        TAIL = ''
+
+        i, j = 0, 0
+        head_check = False
+        while True:
+            if not head_check and file[i].isdigit():
+                HEAD = file[:i]
+                head_check = True
+                j = i
+
+            if head_check:
+                if i == length or not file[i].isdigit():
+                    NUMBER = int(file[j:i])
+                    break
+
+            i += 1
+
+        lst.append((HEAD, NUMBER, idx))
+
+    lst.sort()
+
+    for i, j, idx in lst:
+        answer.append(files[idx])
+
+    return answer
