@@ -1,0 +1,24 @@
+def solution(msg):
+    answer = []
+
+    dct = dict()
+    for i in range(65, 91):
+        dct[chr(i)] = i-64
+    last_idx = 27
+    i = 0
+    while i < len(msg):
+        print(i)
+        j = 2
+        while i+j <= len(msg):
+            if dct.get(msg[i:i+j]) == None:
+                break
+            j += 1
+        answer.append(dct[msg[i:i+j-1]])
+        dct[msg[i:i+j]] = last_idx
+
+        i = i+j-1
+        last_idx += 1
+
+    # print(dct)
+    # print(answer)
+    return answer
