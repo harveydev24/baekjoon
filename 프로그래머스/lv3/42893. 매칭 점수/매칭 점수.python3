@@ -1,0 +1,31 @@
+import re
+
+
+def solution(word, pages):
+    answer = 0
+    scores = []
+    urls = []
+    page_info = []
+
+    for page in pages:
+        basic_score = 0
+        for f in re.findall(r'[a-zA-Z]+', page.lower()):
+            if f == word.lower():
+                basic_score += 1
+        scores.append(basic_score)
+
+        url = re.search(
+            '<meta property="og:url" content="(\S+)"', page).group(1)
+        urls.append(url)
+
+        links = re.findall('<a href="(https://[\S]*)"', page)
+        page_info.append((basic_score, url, links))
+
+    for tmp in page_info:
+        for link in tmp[2]:
+            if link in urls:
+                scores[urls.index(link)] += tmp[0]/len(tmp[2])
+
+    answer = scores.index(max(scores))
+
+    return answer
