@@ -1,0 +1,65 @@
+import sys
+sys.setrecursionlimit(10**5)
+
+
+def pre_order(tmp_info, pre_lst):
+    if len(tmp_info) < 1:
+        return
+    if len(tmp_info) == 1:
+        pre_lst.append(1+tmp_info[0][2])
+        return
+    left = []
+    right = []
+
+    for x, y, idx in tmp_info:
+        if x == tmp_info[0][0]:
+            continue
+
+        if x < tmp_info[0][0]:
+            left.append([x, y, idx])
+        else:
+            right.append([x, y, idx])
+
+    pre_lst.append(1+tmp_info[0][2])
+    pre_order(left, pre_lst)
+    pre_order(right, pre_lst)
+
+
+def post_order(tmp_info, post_lst):
+    if len(tmp_info) < 1:
+        return
+    if len(tmp_info) == 1:
+        post_lst.append(1+tmp_info[0][2])
+        return
+    left = []
+    right = []
+
+    for x, y, idx in tmp_info:
+        if x == tmp_info[0][0]:
+            continue
+
+        if x < tmp_info[0][0]:
+            left.append([x, y, idx])
+        else:
+            right.append([x, y, idx])
+
+    post_order(left, post_lst)
+    post_order(right, post_lst)
+    post_lst.append(1+tmp_info[0][2])
+
+
+def solution(nodeinfo):
+    answer = []
+    tmp_info = []
+    for idx, info in enumerate(nodeinfo):
+        tmp_info.append(info + [idx])
+
+    pre_lst = []
+    post_lst = []
+
+    tmp_info.sort(key=lambda x: (x[1], -x[0]), reverse=True)
+    pre_order(tmp_info, pre_lst)
+    post_order(tmp_info, post_lst)
+    answer.append(pre_lst)
+    answer.append(post_lst)
+    return answer
