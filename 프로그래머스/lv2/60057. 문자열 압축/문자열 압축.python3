@@ -2,31 +2,25 @@ def solution(s):
     answer = len(s)
 
     for i in range(1, len(s)//2+1):
+        words = [s[x:x+i] for x in range(0, len(s), i)]
         res = ''
-        pattern = s[:i]
-        idx = 0
+        curr_word = words[0]
         cnt = 0
-        while idx <= len(s):
-            if idx+i > len(s):
-                if cnt == 1:
-                    res += pattern
-                else:
-                    res += str(cnt) + pattern
-                res += s[idx:]
-                break
-
-            if s[idx:idx+i] == pattern:
+        for idx, word in enumerate(words):
+            if curr_word == word:
                 cnt += 1
-                idx += i
             else:
                 if cnt == 1:
-                    res += pattern
+                    res += curr_word
                 else:
-                    res += str(cnt) + pattern
-                cnt = 0
-                pattern = s[idx:idx+i]
+                    res += str(cnt) + curr_word
+                curr_word = word
+                cnt = 1
+
+            if idx == len(words)-1:
+                if cnt == 1:
+                    res += curr_word
+                else:
+                    res += str(cnt) + curr_word
         answer = min(answer, len(res))
     return answer
-
-
-print(solution("xababcdcdababcdcd"))
