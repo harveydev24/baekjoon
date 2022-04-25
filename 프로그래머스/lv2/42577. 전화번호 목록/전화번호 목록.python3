@@ -1,18 +1,17 @@
+from collections import defaultdict
+
+
 def solution(phone_book):
-    answer = True
-
-    phone_book_dict = {}
+    my_dict = defaultdict(int)
 
     for number in phone_book:
-        phone_book_dict[number] = 0
+        tmp = ''
+        for i in range(len(number)):
+            tmp += number[i]
+            my_dict[tmp] += 1
 
     for number in phone_book:
-        for i in range(1, len(number)+1):
-            if phone_book_dict.get(number[:i]) != None:
-                phone_book_dict[number[:i]] += 1
-                if phone_book_dict[number[:i]] == 2:
-                    return False
+        if number in my_dict and my_dict[number] != 1:
+            return False
 
-
-    return answer
-
+    return True
