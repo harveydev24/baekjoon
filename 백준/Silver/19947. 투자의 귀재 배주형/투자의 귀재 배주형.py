@@ -1,14 +1,18 @@
 h, y = map(int, input().split())
-dp = [0 for i in range(y+1)]
+dp = [-1 for i in range(y+1)]
 dp[0] = h
 
-for i in range(1, y+1):
-    if i >= 5:
-        dp[i] = max(dp[i-1]*1.05, dp[i-3]*1.2, dp[i-5]*1.35)
-    elif i >= 3:
-        dp[i] = max(dp[i - 1] * 1.05, dp[i - 3] * 1.2)
-    else:
-        dp[i] = dp[i - 1] * 1.05
-    dp[i] = int(dp[i])
 
-print(int(dp[y]))
+def solve(y):
+    if y < 0:
+        return 0
+
+    if dp[y] != -1:
+        return dp[y]
+
+    dp[y] = max(int(solve(y-1)*1.05),
+                int(solve(y-3)*1.2), int(solve(y-5)*1.35))
+    return dp[y]
+
+
+print(solve(y))
