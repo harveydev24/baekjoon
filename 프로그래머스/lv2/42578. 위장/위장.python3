@@ -1,0 +1,14 @@
+from collections import defaultdict
+
+
+def solution(clothes):
+    my_dict = defaultdict(list)
+
+    for item, key in clothes:
+        my_dict[key].append(item)
+
+    answer = 1
+    for key, value in my_dict.items():
+        answer *= (len(value)+1)
+
+    return answer-1
