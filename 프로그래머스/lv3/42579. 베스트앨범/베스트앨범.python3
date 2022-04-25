@@ -1,0 +1,23 @@
+def solution(genres, plays):
+    answer = []
+
+    my_dict = {}
+    my_dict_sum = {}
+
+    for i in range(len(genres)):
+        if my_dict.get(genres[i]) == None:
+            my_dict[genres[i]] = [(-plays[i], i)]
+            my_dict_sum[genres[i]] = plays[i]
+        else:
+            my_dict[genres[i]].append((-plays[i], i))
+            my_dict_sum[genres[i]] += plays[i]
+
+    genre_order = sorted(list(my_dict_sum.items()),
+                         key=lambda x: x[1], reverse=True)
+
+    for key, value in genre_order:
+        play_lst = my_dict[key]
+        play_lst.sort()
+        for item in play_lst[:2]:
+            answer.append(item[1])
+    return answer
