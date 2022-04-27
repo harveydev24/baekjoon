@@ -1,5 +1,4 @@
 def solution(number, k):
-    answer = ''
     stack = [number[0]]
     for i in range(1, len(number)):
         if k:
@@ -16,5 +15,5 @@ def solution(number, k):
     while k:
         stack.pop()
         k -= 1
-    answer = ''.join(stack)
-    return answer
+
+    return ''.join(stack)
