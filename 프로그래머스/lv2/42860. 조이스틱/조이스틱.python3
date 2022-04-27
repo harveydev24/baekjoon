@@ -1,0 +1,48 @@
+from collections import deque
+
+
+def convert_cnt(letter):
+    return min(ord(letter)-ord('A'), ord('Z')+1-ord(letter))
+
+
+def recur(curr_idx, change_lst, dist, N):
+    global answer
+    if not change_lst:
+        answer = min(answer, dist)
+        return
+
+    tmp = change_lst.popleft()
+    if curr_idx < tmp:
+        recur(tmp, change_lst, dist+tmp-curr_idx, N)
+    elif curr_idx > tmp:
+        recur(tmp, change_lst, dist+N-curr_idx+tmp, N)
+    change_lst.appendleft(tmp)
+
+    tmp = change_lst.pop()
+    if curr_idx < tmp:
+        recur(tmp, change_lst, dist+curr_idx+N-tmp, N)
+    elif curr_idx > tmp:
+        recur(tmp, change_lst, dist+curr_idx-tmp, N)
+
+    change_lst.append(tmp)
+
+
+answer = 10**5
+
+
+def solution(name):
+    global answer
+    answer = 10**5
+    word_answer = convert_cnt(name[0])
+    change_lst = deque([])
+    for idx, letter in enumerate(name):
+        if idx == 0:
+            continue
+
+        if letter != 'A':
+            change_lst.append(idx)
+            word_answer += convert_cnt(letter)
+
+    recur(0, change_lst, 0, len(name))
+
+    return answer + word_answer
