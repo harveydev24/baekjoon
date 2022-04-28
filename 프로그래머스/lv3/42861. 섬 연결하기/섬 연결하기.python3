@@ -1,0 +1,27 @@
+def find(x, parent):
+    if x != parent[x]:
+        parent[x] = find(parent[x], parent)
+    return parent[x]
+
+
+def union(x, y, parent):
+    x = find(x, parent)
+    y = find(y, parent)
+    parent[max(x, y)] = min(x, y)
+
+
+def solution(n, costs):
+    answer = 0
+    cnt = 0
+    parent = [x for x in range(n)]
+    costs.sort(key=lambda x: x[2])
+
+    for cost in costs:
+        x, y, c = cost
+        if find(x, parent) != find(y, parent):
+            union(x, y, parent)
+            answer += c
+            cnt += 1
+
+        if cnt == n-1:
+            return answer
