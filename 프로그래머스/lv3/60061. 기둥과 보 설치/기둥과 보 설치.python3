@@ -1,0 +1,35 @@
+def is_impossible(structures):
+
+    for x, y, a in structures:
+        # 기둥
+        if a == 0:
+            if y != 0 and (x, y-1, 0) not in structures and (x, y, 1) not in structures and (x-1, y, 1) not in structures:
+                return True
+            # 보
+        elif a == 1:
+            if (x, y-1, 0) not in structures and (x+1, y-1, 0) not in structures and not ((x-1, y, 1) in structures and (x+1, y, 1) in structures):
+                return True
+
+    return False
+
+
+def solution(n, build_frame):
+    structures = set()
+
+    for x, y, a, b in build_frame:
+        # 삭제
+        if b == 0:
+            structures.remove((x, y, a))
+            if is_impossible(structures):
+                structures.add((x, y, a))
+        # 설치
+        elif b == 1:
+            structures.add((x, y, a))
+            if is_impossible(structures):
+                structures.remove((x, y, a))
+
+    answer = []
+    for structure in structures:
+        answer.append(list(structure))
+    answer.sort()
+    return answer
