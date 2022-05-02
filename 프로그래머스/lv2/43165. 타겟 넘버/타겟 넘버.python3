@@ -1,0 +1,18 @@
+
+
+def solution(numbers, target):
+    answer = 0
+
+    def cal(numbers, idx, tmp):
+        nonlocal answer, target
+        if idx == len(numbers):
+            if tmp == target:
+                answer += 1
+            return
+
+        cal(numbers, idx+1, tmp+numbers[idx])
+        cal(numbers, idx+1, tmp-numbers[idx])
+
+    cal(numbers, 0, 0)
+
+    return answer
