@@ -1,0 +1,33 @@
+from collections import defaultdict
+
+
+def solution(tickets):
+    answer = []
+    adj = defaultdict(dict)
+    for start, end in tickets:
+        if adj[start].get(end) == None:
+            adj[start][end] = 1
+        else:
+            adj[start][end] += 1
+    num_egdes = len(tickets)
+    routes = []
+
+    def dfs(curr, stack, cnt):
+        nonlocal routes
+
+        if cnt == num_egdes:
+            routes.append(stack[:])
+            return
+
+        for next in adj[curr]:
+            if adj[curr][next] > 0:
+                adj[curr][next] -= 1
+                dfs(next, stack + [next], cnt + 1)
+                adj[curr][next] += 1
+
+    dfs('ICN', ['ICN'], 0)
+
+    routes.sort()
+    answer = routes[0]
+
+    return answer
