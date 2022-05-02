@@ -1,0 +1,51 @@
+from collections import deque
+
+
+def is_convertible(A, B):
+    cnt = 0
+    for i in range(len(A)):
+        if A[i] != B[i]:
+            cnt += 1
+    if cnt == 1:
+        return True
+    else:
+        return False
+
+
+def solution(begin, target, words):
+    if target not in words:
+        return 0
+
+    answer = 0
+    adj = {begin: [], target: []}
+    visited = {}
+    for word in words:
+        adj[word] = []
+        visited[word] = False
+        if is_convertible(begin, word):
+            adj[begin].append(word)
+            adj[word].append(begin)
+        if is_convertible(target, word):
+            adj[target].append(word)
+            adj[word].append(target)
+
+    for i in range(len(words)-1):
+        for j in range(i+1, len(words)):
+            if is_convertible(words[i], words[j]):
+                adj[words[i]].append(words[j])
+                adj[words[j]].append(words[i])
+
+    q = deque([(begin, 0)])
+    visited[begin] = True
+
+    while q:
+        curr, cnt = q.popleft()
+
+        for next in adj[curr]:
+            if not visited[next]:
+                q.append((next, cnt+1))
+                visited[next] = True
+                if next == target:
+                    return cnt + 1
+
+    return 0
