@@ -1,0 +1,38 @@
+from collections import deque
+
+
+def solution(places):
+    answer = []
+    dr, dc = [-1, 0, 1, 0], [0, 1, 0, -1]
+    for place in places:
+        check = 1
+        for r in range(5):
+            for c in range(5):
+                if place[r][c] == 'P':
+                    visited = [[False]*5 for _ in range(5)]
+                    q = deque([(r, c, 0)])
+                    visited[r][c] = True
+                    while q:
+                        nr, nc, dist = q.popleft()
+                        for i in range(4):
+                            rr, cc = nr+dr[i], nc+dc[i]
+                            if 0 <= rr < 5 and 0 <= cc < 5:
+                                if not visited[rr][cc] and place[rr][cc] == 'O':
+                                    visited[rr][cc] = True
+                                    if dist == 0:
+                                        q.append((rr, cc, dist+1))
+                                if not visited[rr][cc] and place[rr][cc] == 'P':
+                                    check = 0
+                                    break
+
+                        if not check:
+                            break
+                    if not check:
+                        break
+            if not check:
+                break
+        answer.append(check)
+
+    return answer
+
+
