@@ -1,0 +1,18 @@
+def solution(prices):
+    answer = [0]*len(prices)
+    
+    stack = []
+    t = 0
+    for idx, price in enumerate(prices):
+        if not stack or stack[-1][0] <= price:
+            stack.append((price,idx,t))
+        else:
+            while stack and stack[-1][0] > price:
+                tmp = stack.pop()
+                answer[tmp[1]] = t-tmp[2]
+            stack.append((price,idx, t))
+        t += 1
+    while stack:
+        tmp = stack.pop()
+        answer[tmp[1]] = t-tmp[2]-1
+    return answer
