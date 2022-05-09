@@ -39,5 +39,3 @@ def solution(operations):
     if not max_heap or not min_heap:
         return [0, 0]
     return [-max_heap[0], min_heap[0]]
-
-
