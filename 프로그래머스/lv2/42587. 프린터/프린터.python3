@@ -1,0 +1,21 @@
+def solution(priorities, location):
+
+    tmp = sorted(priorities, reverse=True)
+    cnt = 0
+
+    while True:
+        if priorities[0] == tmp[0]:
+            cnt += 1
+            if location == 0:
+                return cnt
+            priorities.pop(0)
+            tmp.pop(0)
+            location -= 1
+
+        else:
+            location -= 1
+            if location < 0:
+                location = len(priorities)-1
+            priorities.append(priorities.pop(0))
+
+    return cnt
