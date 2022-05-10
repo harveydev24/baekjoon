@@ -1,0 +1,21 @@
+import functools
+
+def solution(m, n, puddles):
+    answer = 0
+    puddles = set([(c-1, r-1) for r, c in puddles])
+    
+    @functools.lru_cache(None)
+    def solve(r, c):
+        if (r == 0 and c == 0) or (r,c) in puddles:
+            return 0
+        if r<0 or n<=r or c<0 or m<=c:
+            return 0
+        if r == 0 and c == 1:
+            return 1
+        if r == 1 and c == 0:
+            return 1
+        
+        return (solve(r-1, c)+solve(r,c-1))%1000000007
+    
+    
+    return solve(n-1, m-1)
