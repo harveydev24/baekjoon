@@ -34,5 +34,3 @@ def solution(places):
         answer.append(check)
 
     return answer
-
-
