@@ -1,0 +1,27 @@
+def solution(N, number):
+    sets = []
+
+    for i in range(8):
+        if i == 0:
+            sets.append(set([N]))
+        else:
+            tmp = N
+            for j in range(i):
+                tmp *= 10
+                tmp += N
+
+            tmp_set = set([tmp])
+            for k in range(i):
+                for num1 in sets[k]:
+                    for num2 in sets[i-k-1]:
+                        tmp_set.add(num1+num2)
+                        tmp_set.add(num1-num2)
+                        tmp_set.add(num1*num2)
+                        if num2:
+                            tmp_set.add(num1//num2)
+            sets.append(tmp_set)
+
+    for idx, item in enumerate(sets):
+        if number in item:
+            return idx+1
+    return -1
