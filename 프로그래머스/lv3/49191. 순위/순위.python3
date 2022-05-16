@@ -1,0 +1,51 @@
+from collections import deque
+
+
+def solution(n, results):
+    answer = 0
+    adj = [[] for _ in range(n+1)]
+    adj_reversed = [[] for _ in range(n+1)]
+    dp = [-1]*(n+1)
+    dp_reversed = [-1]*(n+1)
+
+    for A, B in results:
+        adj[B].append(A)
+        adj_reversed[A].append(B)
+
+    for i in range(1, n+1):
+        cnt = 1
+
+        visited = [False]*(n+1)
+
+        q = deque([i])
+        visited[i] = True
+        while q:
+            curr = q.popleft()
+
+            for next in adj[curr]:
+                if not visited[next]:
+                    visited[next] = True
+                    if dp[next] != -1:
+                        cnt += dp[next]
+                    else:
+                        cnt += 1
+                        q.append(next)
+
+        cnt_reversed = 0
+        q = deque([i])
+        while q:
+            curr = q.popleft()
+
+            for next in adj_reversed[curr]:
+                if not visited[next]:
+                    visited[next] = True
+                    if dp_reversed[next] != -1:
+                        cnt_reversed += dp_reversed[next]
+                    else:
+                        cnt_reversed += 1
+                        q.append(next)
+
+        if cnt + cnt_reversed == n:
+            answer += 1
+
+    return answer
