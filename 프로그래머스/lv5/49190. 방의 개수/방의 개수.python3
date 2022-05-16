@@ -1,0 +1,45 @@
+def solution(arrows):
+    answer = 0
+
+    dx, dy = [0, 1, 1, 1, 0, -1, -1, -1], [1, 1, 0, -1, -1, -1, 0, 1]
+    points = set()
+    sides = set()
+
+    x, y = 0, 0
+    points.add((0, 0))
+
+    def points_sort(x1, y1, x2, y2):
+        if x1 < x2:
+            return (x1, y1, x2, y2)
+        elif x1 > x2:
+            return (x2, y2, x1, y1)
+        elif x1 == x2:
+            if y1 < y2:
+                return (x1, y1, x2, y2)
+            elif y1 > y2:
+                return (x2, y2, x1, y1)
+
+    for arrow in arrows:
+        px, py = x, y
+        x, y = x+dx[arrow], y+dy[arrow]
+        res = points_sort(px, py, x, y)
+        if (x, y) in points:
+            if res not in sides:
+                answer += 1
+                sides.add(res)
+        else:
+            points.add((x, y))
+            sides.add(res)
+
+        px, py = x, y
+        x, y = x+dx[arrow], y+dy[arrow]
+        res = points_sort(px, py, x, y)
+        if (x, y) in points:
+            if res not in sides:
+                answer += 1
+                sides.add(res)
+        else:
+            points.add((x, y))
+            sides.add(res)
+
+    return answer
