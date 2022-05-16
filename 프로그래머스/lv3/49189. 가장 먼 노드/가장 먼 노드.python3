@@ -1,0 +1,32 @@
+from collections import deque
+
+
+def solution(n, edge):
+    answer = 0
+    adj = [[] for _ in range(n+1)]
+    for a, b in edge:
+        adj[a].append(b)
+        adj[b].append(a)
+
+    visited = [False]*(n+1)
+
+    q = deque([(1, 0)])
+    visited[1] = True
+    farthest = 0
+
+    while q:
+        curr, dist = q.popleft()
+
+        for next in adj[curr]:
+            if not visited[next]:
+                visited[next] = True
+                q.append((next, dist+1))
+
+                if dist+1 > farthest:
+                    farthest = dist + 1
+                    answer = 1
+                elif dist+1 == farthest:
+                    answer += 1
+
+    return answer
+
