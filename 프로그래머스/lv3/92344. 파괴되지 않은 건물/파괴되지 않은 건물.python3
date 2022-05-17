@@ -1,0 +1,28 @@
+def solution(board, skill):
+    answer = 0
+
+    R = len(board)
+    C = len(board[0])
+
+    acc_sum = [[0] * (C+1) for _ in range(R+1)]
+
+    for type, r1, c1, r2, c2, degree in skill:
+        acc_sum[r1][c1] += -degree if type == 1 else degree
+        acc_sum[r1][c2+1] += degree if type == 1 else -degree
+        acc_sum[r2+1][c1] += degree if type == 1 else -degree
+        acc_sum[r2+1][c2+1] += -degree if type == 1 else degree
+
+    for c in range(C):
+        for r in range(R+1):
+            acc_sum[r][c+1] += acc_sum[r][c]
+
+    for r in range(R):
+        for c in range(C+1):
+            acc_sum[r+1][c] += acc_sum[r][c]
+
+    for r in range(R):
+        for c in range(C):
+            if board[r][c] + acc_sum[r][c] > 0:
+                answer += 1
+
+    return answer
