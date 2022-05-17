@@ -1,0 +1,23 @@
+def solution(info, edges):
+
+    adj = [[] for _ in range(len(info))]
+    for parent, child in edges:
+        adj[parent].append(child)
+
+    def dfs(curr, sheep, wolf, route):
+        if info[curr]:
+            wolf += 1
+        else:
+            sheep += 1
+
+        if sheep <= wolf:
+            return 0
+
+        cnt = sheep
+        for node in route:
+            for next in adj[node]:
+                if next not in route:
+                    cnt = max(cnt, dfs(next, sheep, wolf, route+[next]))
+        return cnt
+
+    return dfs(0, 0, 0, [0])
