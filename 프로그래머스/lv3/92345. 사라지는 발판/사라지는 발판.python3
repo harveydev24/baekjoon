@@ -1,0 +1,45 @@
+from collections import deque
+
+
+def solution(board, aloc, bloc):
+    answer = 0
+    R = len(board)
+    C = len(board[0])
+
+    dr, dc = [-1, 0, 1, 0], [0, 1, 0, -1]
+
+    def isOver(r, c, board):
+        for i in range(4):
+            rr, cc = r+dr[i], c+dc[i]
+            if 0 <= rr < R and 0 <= cc < C and board[rr][cc]:
+                return False
+        return True
+
+    def recur(r, c, r2, c2, board):
+        if isOver(r, c, board):
+            return 0, 0
+        if r == r2 and c == c2:
+            return 1, 1
+
+        is_win = 0
+        min_cnt = float('inf')
+        max_cnt = 0
+
+        for i in range(4):
+            rr, cc = r+dr[i], c+dc[i]
+            if 0 <= rr < R and 0 <= cc < C and board[rr][cc]:
+                board[r][c] = 0
+                tmp_is_win, tmp_cnt = recur(r2, c2, rr, cc, board)
+                board[r][c] = 1
+
+                if tmp_is_win == 0:
+                    is_win = 1
+                    min_cnt = min(min_cnt, tmp_cnt)
+                else:
+                    max_cnt = max(max_cnt, tmp_cnt)
+
+        return is_win, min_cnt+1 if is_win else max_cnt+1
+
+    _, answer = recur(aloc[0], aloc[1], bloc[0], bloc[1], board)
+
+    return answer
