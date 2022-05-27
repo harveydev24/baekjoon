@@ -1,39 +1,38 @@
+import heapq
 import sys
 input = sys.stdin.readline
 
 N = int(input())
 M = int(input())
 
-lst = []
-parent = [x for x in range(N+1)]
-
-
-def find(x):
-    if parent[x] != x:
-        parent[x] = find(parent[x])
-    return parent[x]
-
-
-def union(x, y):
-    x = find(x)
-    y = find(y)
-    parent[max(x, y)] = min(x, y)
+adj = [[] for _ in range(N+1)]
 
 
 for _ in range(M):
     a, b, c = map(int, input().split())
     if a != b:
-        lst.append((c, a, b))
+        adj[a].append((b, c))
+        adj[b].append((a, c))
 
-lst.sort()
-cnt = 1
+
+T = set([1])
+q = []
+
+heapq.heapify(q)
+
+for next, cost in adj[1]:
+    heapq.heappush(q, (cost, next))
+
 ans = 0
-for c, a, b in lst:
-    if find(a) != find(b):
-        union(a, b)
-        cnt += 1
+
+while len(T) < N:
+    c, n = heapq.heappop(q)
+    if n not in T:
+        T.add(n)
         ans += c
-    if cnt == N:
-        break
+
+        for next, cost in adj[n]:
+            if next not in T:
+                heapq.heappush(q, (cost, next))
 
 print(ans)
