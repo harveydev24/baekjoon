@@ -1,0 +1,39 @@
+from collections import defaultdict
+
+
+def solution(sales, links):
+    answer = 0
+    sales = [0]+sales
+    team = [[] for _ in range(len(sales))]
+
+    for a, b in links:
+        team[a].append(b)
+
+    def solve(root):
+        if not team[root]:
+            return sales[root], 0
+
+        with_root_sum = sales[root]
+        without_root_sum = 0
+
+        flag = False
+        tmp_min = float('inf')
+
+        for child in team[root]:
+            with_root, without_root = solve(child)
+            with_root_sum += min(with_root, without_root)
+
+            tmp_min = min(tmp_min, with_root - without_root)
+
+            if with_root <= without_root:
+                flag = True
+                without_root_sum += with_root
+            else:
+                without_root_sum += without_root
+
+        if not flag:
+            without_root_sum += tmp_min
+
+        return with_root_sum, without_root_sum
+
+    return min(solve(1))
